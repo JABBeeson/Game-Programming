@@ -3,7 +3,11 @@
 
 int main(int argc, char* argv[])
 {
-	SDL_Window *window;		//Declare a pointer
+	// **** POINTER DECLARATION ****
+	SDL_Window *window;		
+	SDL_Renderer *renderer;
+
+	
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { //copys header into file
 		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_INit Error: %s\n", SDL_GetError());
@@ -19,8 +23,14 @@ int main(int argc, char* argv[])
 		SDL_WINDOWPOS_UNDEFINED,	//initial y position
 		640,						//width, in pixels
 		480,						//height, in pixels
-		SDL_WINDOW_OPENGL			//flags
+		SDL_WINDOW_OPENGL			//flags - window usable with OpenGL context
 	); //creates window
+
+	renderer = SDL_CreateRenderer(
+		window,						//Parent window
+		-1,							//Index
+		SDL_RENDERER_ACCELERATED	//Flags - the renderer uses hardware acceleration
+	);
 
 	//Check if the window was successfuly created & warning
 	if (window == NULL)
