@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
 	SDL_Delay(2000); //two second pause
 
 	//Window is closed and destroyed
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
 	//Clean up

@@ -1,3 +1,6 @@
 conan install
-cmake ./build -G "Visual Studio 14 Win64"
-cmake --build ./build --config Release
+mkdir build
+cd build
+cmake -G "Visual Studio 14 Win64" ..
+cmake --build . --config Release
+cd ..
