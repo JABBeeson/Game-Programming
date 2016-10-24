@@ -17,29 +17,24 @@ int main(int argc, char* argv[])
 
 	// **** WINDOW SETTINGS ****
 
-	window = SDL_CreateWindow(
-		"Window1",					//Window Title
-		SDL_WINDOWPOS_UNDEFINED,	//initial x position
-		SDL_WINDOWPOS_UNDEFINED,	//initial y position
-		640,						//width, in pixels
-		480,						//height, in pixels
-		SDL_WINDOW_OPENGL			//flags - window usable with OpenGL context
-	); //creates window
-
-	renderer = SDL_CreateRenderer(
-		window,						//Parent window
-		-1,							//Index
-		SDL_RENDERER_ACCELERATED	//Flags - the renderer uses hardware acceleration
-	);
-
-	//Check if the window was successfuly created & warning
-	if (window == NULL)
+	if (SDL_CreateWindowAndRenderer(320,240,SDL_WINDOW_RESIZABLE,&window,&renderer))
 	{
-		printf("Could not generate window %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
 		return 1;
 	}
+	
+	//Clear the entire screen to our selected color.
+	SDL_RenderClear(renderer);
+		//updates the screen
+	
+		// Select the color for drawing. It is set to red here. 	
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	
+	
+	SDL_RenderPresent(renderer);
 
-	SDL_Delay(2000); //two second pause
+
+	SDL_Delay(5000); //two second pause
 
 	//Window is closed and destroyed
 	SDL_DestroyRenderer(renderer);
