@@ -16,8 +16,25 @@ chrono::high_resolution_clock::time_point getCurrentTime() //everything must be 
 void processInput(bool &running)
 {
 	// get input, SLD POLL EVENT, SDL QUIT EVENT - 
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_SPACE)
+				SDL_Log("space down");
+				break;
+		case SDL_KEYUP:
+			if(event.key.keysym.sym == SDLK_SPACE)
+				SDL_Log("space up.");
+				break;
+		}
+	}
 
-	SDL_Log("ProcessInput");
+	
+
+	//SDL_Log("ProcessInput");
 }
 
 
@@ -28,7 +45,7 @@ void update(double frameTime)		//everything must be multipied by the frame time!
 	
 	//double position = playerSpeed * frameTime;	//regulation ensure that the player moves a constant speed
 
-	SDL_Log("Update");
+	//SDL_Log("Update");
 }
 
 void render()
@@ -44,7 +61,7 @@ void render()
 	//updates the screen
 	SDL_RenderPresent(renderer);
 
-	SDL_Log("Render");
+	//SDL_Log("Render");
 }
 
 int main(int argc, char* argv[])
