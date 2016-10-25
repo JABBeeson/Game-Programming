@@ -22,8 +22,29 @@ int main(int argc, char* argv[])
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
 		return 1;
 	}
+
+	// **** GAME LOOP ****
+
+	double previous = getCurrentTime(), lag = 0.0;
 	
-	//Clear the entire screen to our selected color.
+	while (true)
+	{
+		double current = getCurrentTime(); //SDL_getTicks()
+		double elapsed = current - previous;
+		previous = current;
+		lag += elapsed;
+
+		processInput();
+
+		//ammends the lag time depending on how quickly the host computer can update.		
+		while (lag > -MS_PER_UPDATE){
+			update();
+			lag -= MS_PER_UPDATE;
+		}
+		render();
+	}
+	
+	/*//Clear the entire screen to our selected color.
 	SDL_RenderClear(renderer);
 		//updates the screen
 	
@@ -41,6 +62,6 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 
 	//Clean up
-	SDL_Quit();
+	SDL_Quit();*/
 	return 0;
 }
