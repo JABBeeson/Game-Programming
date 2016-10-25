@@ -1,12 +1,60 @@
 #include <iostream>
+#include <chrono>
 #include "SDL.h"
+
+using namespace std;
+
+// **** POINTER DECLARATION ****
+SDL_Window *window;
+SDL_Renderer *renderer;
+
+chrono::high_resolution_clock::time_point getCurrentTime() //everything must be multipied by the frame time!!
+{
+	return chrono::high_resolution_clock::now();
+}
+
+void processInput(bool &running)
+{
+	// get input, SLD POLL EVENT, SDL QUIT EVENT - 
+
+	SDL_Log("ProcessInput");
+}
+
+
+
+void update(double frameTime)		//everything must be multipied by the frame time!!
+{
+	// change the state
+	
+	//double position = playerSpeed * frameTime;	//regulation ensure that the player moves a constant speed
+
+	SDL_Log("Update");
+}
+
+void render()
+{
+	// render
+
+	//Clear the entire screen to our selected color.
+	SDL_RenderClear(renderer);
+	
+	// Select the color for drawing. It is set to red here. 	
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+	//updates the screen
+	SDL_RenderPresent(renderer);
+
+	SDL_Log("Render");
+}
 
 int main(int argc, char* argv[])
 {
-	// **** POINTER DECLARATION ****
-	SDL_Window *window;		
-	SDL_Renderer *renderer;
-
+	//**** VARIABLE DECLARATION ****
+	bool running = true;
+	
+	double timeDiff = 0;														//Time related
+	chrono::high_resolution_clock::time_point previous = getCurrentTime();		//Time related
+	
 	
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { //copys header into file
@@ -22,46 +70,26 @@ int main(int argc, char* argv[])
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
 		return 1;
 	}
-
+		
 	// **** GAME LOOP ****
 
-	double previous = getCurrentTime(), lag = 0.0;
-	
-	while (true)
+	while (running)
 	{
-		double current = getCurrentTime(); //SDL_getTicks()
-		double elapsed = current - previous;
-		previous = current;
-		lag += elapsed;
+		timeDiff = (chrono::duration_cast<chrono::microseconds>(getCurrentTime() - previous).count()) / (1000 * 1000);
+		previous = getCurrentTime();
 
-		processInput();
 
-		//ammends the lag time depending on how quickly the host computer can update.		
-		while (lag > -MS_PER_UPDATE){
-			update();
-			lag -= MS_PER_UPDATE;
-		}
-		render();
+		processInput(running); // process input
+		update(timeDiff); // update
+		render(); // render
+		
 	}
 	
-	/*//Clear the entire screen to our selected color.
-	SDL_RenderClear(renderer);
-		//updates the screen
-	
-		// Select the color for drawing. It is set to red here. 	
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	
-	
-	SDL_RenderPresent(renderer);
-
-
-	SDL_Delay(5000); //two second pause
-
 	//Window is closed and destroyed
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
 	//Clean up
-	SDL_Quit();*/
+	SDL_Quit();
 	return 0;
 }
