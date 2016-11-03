@@ -1,0 +1,20 @@
+﻿Build started 03/11/2016 19:44:20.
+     1>Project "G:\Yr 2\Games Programming\ConsoleApplicationConan\build\program.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         E:\Program Files\Visual Studio\VC\bin\x86_amd64\CL.exe /c /IC:\Users\Joe\.conan\data\SDL2\2.0.4\lasote\stable\package\91ccb03e0dea4be83e98d3bb24f796dc48e5be84\include /IC:\Users\Joe\.conan\data\zlib\1.2.8\lasote\stable\package\63da998e3642b50bee33f4449826b2d623661505\include /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"program.dir\Debug\\" /Fd"program.dir\Debug\vc140.pdb" /Gd /TP /errorReport:prompt "G:\Yr 2\Games Programming\ConsoleApplicationConan\main.cpp"
+         main.cpp
+     1>G:\Yr 2\Games Programming\ConsoleApplicationConan\main.cpp(27): warning C4800: 'Uint32': forcing value to bool 'true' or 'false' (performance warning)
+     1>G:\Yr 2\Games Programming\ConsoleApplicationConan\main.cpp(142): warning C4838: conversion from 'double' to 'int' requires a narrowing conversion
+     1>G:\Yr 2\Games Programming\ConsoleApplicationConan\main.cpp(142): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+     1>G:\Yr 2\Games Programming\ConsoleApplicationConan\main.cpp(206): warning C4244: '=': conversion from '__int64' to 'double', possible loss of data
+       Link:
+         E:\Program Files\Visual Studio\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"G:\Yr 2\Games Programming\ConsoleApplicationConan\build\bin\program.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:/Users/Joe/.conan/data/SDL2/2.0.4/lasote/stable/package/91ccb03e0dea4be83e98d3bb24f796dc48e5be84/lib /LIBPATH:C:/Users/Joe/.conan/data/SDL2/2.0.4/lasote/stable/package/91ccb03e0dea4be83e98d3bb24f796dc48e5be84/lib/Debug /LIBPATH:C:/Users/Joe/.conan/data/zlib/1.2.8/lasote/stable/package/63da998e3642b50bee33f4449826b2d623661505/lib /LIBPATH:C:/Users/Joe/.conan/data/zlib/1.2.8/lasote/stable/package/63da998e3642b50bee33f4449826b2d623661505/lib/Debug kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib SDL2.lib OpenGL32.lib SDL2main.lib user32.lib gdi32.lib winmm.lib imm32.lib ole32.lib oleaut32.lib version.lib uuid.lib zlibstatic.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:/Yr 2/Games Programming/ConsoleApplicationConan/build/bin/program.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:/Yr 2/Games Programming/ConsoleApplicationConan/build/lib/program.lib" /MACHINE:X64  /machine:x64 program.dir\Debug\Inputs.obj
+         program.dir\Debug\Position.obj
+         program.dir\Debug\Window.obj
+         program.dir\Debug\main.obj
+         program.vcxproj -> G:\Yr 2\Games Programming\ConsoleApplicationConan\build\bin\program.exe
+     1>Done Building Project "G:\Yr 2\Games Programming\ConsoleApplicationConan\build\program.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.79
