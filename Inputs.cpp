@@ -1,3 +1,4 @@
+#pragma once
 #include "Inputs.h"
 
 Inputs::Inputs()

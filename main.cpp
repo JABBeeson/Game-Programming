@@ -1,50 +1,97 @@
-#include "Globals.h"
 #include <iostream>
 #include <chrono>
-#include "SDL.h"
-#include "Position.h"	// importing class headers
-#include "Inputs.h"
-#include "Window.h"
+#include <vector>
+#include <iterator>
 #include <string>
+
+#include "Globals.h"	// importing class headers
+#include "SDL.h"
+#include "Position.h"
+#include "Inputs.h"
+#include "Sprite.h"
+#include "GameWorld.h"
 
 using namespace std;
 
 // **** WINDOW AND RENDERER POINTER DECLARATION ****
+
+//global is instantiated at load time - before main starts
+
 SDL_Window *window = nullptr;
 SDL_Renderer *renderer = nullptr;
+GameWorld gameWorld;
+Inputs userInput;
 
-//int picPosX = 0, picPosY = 0;
 bool fulScrTog = false;
 double playerSpeed = 100;
 
-Position pos;
-Inputs userInput;
 
+// toggle fullscreen routine
 void TFullScr(SDL_Window* window)
 {
-	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;//unidentified 32 bit number
+	Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN_DESKTOP;//unidentified 32 bit number
 	bool fulScrTog = SDL_GetWindowFlags(window) & FullscreenFlag;	// determins wearther or no the window is toggled to full screen.
 	cout << FullscreenFlag;
+
 	SDL_SetWindowFullscreen(window, fulScrTog ? 0 : FullscreenFlag); // '?' condional notaion
-	// get native res
+																	
 	// if fullscreen, set to native
 	// else set to windowed
 }
 
+//clock
 chrono::high_resolution_clock::time_point getCurrentTime() //everything must be multipied by the frame time!!
 {
 	return chrono::high_resolution_clock::now();
 }
 
+//aquired the correct path
 char* getFullPath(char* path) {
 	char* fullPath = SDL_GetBasePath();
 	strcat(fullPath, path);
 	return fullPath;
-} 
+}
+
+void SetupSprite()
+{
+	SDL_Rect PR = { PLAYERSTART.getX(),PLAYERSTART.getY(), 201, 160 };
+	gameWorld.playerSprite = (Sprite(PLAYERSTART, PR, &gameWorld.textureList.at(0)));	// creats player	// Dont include if statment in the for loop
+
+	for (int i = 0; i < ENEMYNUM; i++)
+	{
+		SDL_Rect R = { ENEMYSTART.getX(),ENEMYSTART.getY(), 201, 160 };	// cannot initialise an SDL_Rect in line.
+		gameWorld.enemySprites.push_back(Sprite(ENEMYSTART, R, &gameWorld.textureList.at(1)));	// creates enemys
+	}
+
+}
+
+int ImportTextures()
+{
+	SDL_Surface *PlayerSur = SDL_LoadBMP(getFullPath("Assets/Bee.bmp"));
+	if (PlayerSur == NULL)
+	{
+		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_LoadBMP Error: %s\n", SDL_GetError());
+		return 1;
+	}
+	else
+	{
+		SDL_Texture *PlayerTex = SDL_CreateTextureFromSurface(renderer, PlayerSur);// convert surface to texture
+		if (PlayerTex == NULL) {
+			SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
+			return 1;
+		}
+
+		else
+		{
+			gameWorld.textureList.push_back((*PlayerTex)); // add texture to list
+		}
+	}
+
+}
 
 void processInput(bool &running)
 {
-	// get input, SLD POLL EVENT, SDL QUIT EVENT - 
+	// get input, SLD POLL EVENT, SDL QUIT EVENT -
 	SDL_Event event;
 	while (SDL_PollEvent(&event))	// key events
 	{
@@ -109,43 +156,45 @@ void processInput(bool &running)
 void update(double frameTime)		//everything must be multipied by the frame time!!
 {
 	// change the state
-
-	//in this case, the player movement. moveXY, is a value thats added to the plaer position, giving the illusion of movement. 
-		pos.moveXY(userInput.horizontal * playerSpeed * frameTime, userInput.vertical * playerSpeed * frameTime);
-
-		/*if (userInput.P == true && fulScrTog == false);
-		{
-
-			//window = SDL_SetVideoMode(WINDOW_W, WINDOW_H, 0, SDL_SWSURFACE | SDL_RESIZABLE | SDL_WINDOW_FULLSCREEN);
-			//SDL_SetWindowDisplayMode();
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			fulScrTog = true;
-		}
-		if(userInput.P == true && fulScrTog == true )
-		{
-			fulScrTog = false;
-		}
-			*/
-
+	gameWorld.playerSprite.pos.moveXY(userInput.horizontal * playerSpeed * frameTime, userInput.vertical * playerSpeed * frameTime);
+	//in this case, the player movement. moveXY, is a value thats added to the plaer position, giving the illusion of movement.
 	//SDL_Log("Update");
 }
 
-void render(SDL_Texture *texture)
+void DoRender(Sprite& s)
+{
+	SDL_RenderCopy(renderer, s.texture, (s.Source.w == -1) ? NULL : &s.Source, &s.destinationRenderTarget);
+}
+
+void render()
 {
 	// render
 
 	//Clear the entire renderer
 	SDL_RenderClear(renderer);
-	
-	//  image rendering
-	SDL_Rect destRect = { pos.getX(),pos.getY(),201,160 };	//XYWH
-	SDL_RenderCopy(
-		renderer,		// rendereing context
-		texture,		//source texture
-		NULL,			//SDL_Rect source, Null for all
-		&destRect);		//rendering target
 
-	//	SDL_RenderCopy();
+	//  image rendering
+
+	for (auto Sprite : gameWorld.staticSprites)
+		DoRender(Sprite);
+	for (auto Sprite : gameWorld.enemySprites)
+		DoRender(Sprite);
+
+	/*vector<Sprite>::iterator staticIT;
+	for (staticIT = gameWorld.staticSprites.begin(); staticIT < gameWorld.staticSprites.end(); staticIT++) {
+		Sprite currentStatic = *staticIT;
+		DoRender(currentStatic);
+	}
+
+	vector<Sprite>::iterator enemyIT;
+	for (enemyIT = gameWorld.enemySprites.begin(); enemyIT < gameWorld.enemySprites.end(); enemyIT++) {
+		Sprite currentEnemy = *enemyIT;
+		DoRender(currentEnemy);
+	}
+	*/
+
+	Sprite &playerSprite = gameWorld.playerSprite;
+	DoRender(playerSprite);
 
 
 	//updates the screen
@@ -156,9 +205,7 @@ void render(SDL_Texture *texture)
 
 int main(int argc, char* argv[])
 {
-	// **** VARIABLE DECLARATION ****
-	
-
+	// **** LOAD IN SLD LIBRARY ****
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) { //copys header into file
 		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_INit Error: %s\n", SDL_GetError());
 		return 1;
@@ -174,26 +221,16 @@ int main(int argc, char* argv[])
 	}
 
 	SDL_RenderSetLogicalSize(renderer, WINDOW_W, WINDOW_H);
-	SDL_Delay(1000);
-		
-	SDL_Surface *BeeSur = SDL_LoadBMP(getFullPath("Assets/Bee.bmp"));
-	if (BeeSur == NULL) {
-		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_LoadBMP Error: %s\n", SDL_GetError());
-		return 1;
-	}
 
-	SDL_Texture *BeeTex = SDL_CreateTextureFromSurface(renderer, BeeSur);
-	if (BeeTex == NULL) {
-		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
-		return 1;
-	}
-
+	ImportTextures();
+	SetupSprite();	// set up sprites and fills in sprite textures
+	
 	// **** GAME LOOP ***
 
 	bool running = true;
 	double timeDiff = 0;														//Time related
-	chrono::high_resolution_clock::time_point previous = getCurrentTime();	
-	
+	chrono::high_resolution_clock::time_point previous = getCurrentTime();
+
 
 	while (running)
 	{
@@ -201,16 +238,16 @@ int main(int argc, char* argv[])
 		timeDiff = timeDiff / 1000000; // CONVERSION TO SECONDS
 		previous = getCurrentTime();
 
-		
+
 		processInput(running); // process input
 		update(timeDiff); // update
-		render(BeeTex); // render
+		render(); // render
 	}
-	
+
 	//Window is closed and destroyed
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	
+
 
 	//Clean up
 	SDL_Quit();

@@ -5,7 +5,7 @@ Position::Position()
 	x = 0;
 	y = 0;
 }
-Position::Position(double _x, double _y)
+Position::Position(double _x, double _y) // used to set up the functions  - the constructor
 {
 	x = _x;
 	y = _y;
