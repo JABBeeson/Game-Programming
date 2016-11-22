@@ -54,13 +54,17 @@ char* getFullPath(char* path) {
 
 void SetupSprite()
 {
-	SDL_Rect PR = { PLAYERSTART.getX(),PLAYERSTART.getY(), 201, 160 };
-	gameWorld.playerSprite = (Sprite(PLAYERSTART, PR, &gameWorld.textureList.at(0)));	// creats player	// Dont include if statment in the for loop
+	SDL_Rect pRect = { PLAYERSTART.getX(),PLAYERSTART.getY(), 201, 160 };
+	Sprite* p = new Sprite(PLAYERSTART, pRect, gameWorld.textureList.at(0));
+	gameWorld.playerSprite = *p;
+	delete p;
 
-	for (int i = 0; i < ENEMYNUM; i++)
+	for (int i = 0; i > ENEMYNUM; i++)
 	{
-		SDL_Rect R = { ENEMYSTART.getX(),ENEMYSTART.getY(), 201, 160 };	// cannot initialise an SDL_Rect in line.
-		gameWorld.enemySprites.push_back(Sprite(ENEMYSTART, R, &gameWorld.textureList.at(1)));	// creates enemys
+		SDL_Rect eRect = { ENEMYSTART.getX(),ENEMYSTART.getY(), 201, 160 };	// cannot initialise an SDL_Rect in line.
+		Sprite* e = new Sprite(ENEMYSTART, eRect, gameWorld.textureList.at(i));
+		gameWorld.enemySprites.push_back(*e);
+		delete e;
 	}
 
 }
@@ -83,7 +87,7 @@ int ImportTextures()
 
 		else
 		{
-			gameWorld.textureList.push_back((*PlayerTex)); // add texture to list
+			gameWorld.textureList.push_back(PlayerTex); // add texture to list
 		}
 	}
 

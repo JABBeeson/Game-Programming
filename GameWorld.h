@@ -10,5 +10,5 @@ public:
 	Sprite playerSprite;	//need constructor, even though no parameters
 	std::vector<Sprite> staticSprites;
 	std::vector<Sprite> enemySprites;
-	std::vector<SDL_Texture> textureList;
+	std::vector<SDL_Texture*> textureList;
 };
