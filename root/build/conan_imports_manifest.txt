@@ -1,0 +1,10 @@
+1482404893
+G:\Yr2\Games Programming\Pacman\root\build\bin\SDL2.dll: e5bf11737bf723b58d4ddbe3a8336f9b
+G:\Yr2\Games Programming\Pacman\root\build\bin\SDL2_mixer.dll: 3979932575a7f859c2017ad932db08c5
+G:\Yr2\Games Programming\Pacman\root\build\bin\libFLAC-8.dll: 54e590af270b87b98b0acbfb4563ec7d
+G:\Yr2\Games Programming\Pacman\root\build\bin\libmikmod-2.dll: 6e0112efbe475950593f45016b86a0e4
+G:\Yr2\Games Programming\Pacman\root\build\bin\libmodplug-1.dll: 8583d801d1e73aed919c012ae872fafa
+G:\Yr2\Games Programming\Pacman\root\build\bin\libogg-0.dll: 6ba17da7c073fff4ef00b3a67985baec
+G:\Yr2\Games Programming\Pacman\root\build\bin\libvorbis-0.dll: 4aef80a4521a7aded1df15a1aebe28fd
+G:\Yr2\Games Programming\Pacman\root\build\bin\libvorbisfile-3.dll: 620623f1f1e3a1450311068be51ab18e
+G:\Yr2\Games Programming\Pacman\root\build\bin\smpeg2.dll: d1f1e889cb8cd7646a8615da71ec1c49

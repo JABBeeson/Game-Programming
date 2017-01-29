@@ -1,5 +1,0 @@
-In file included from /Volumes/JB_SANDRIVE/Yr2/Games Programming/ConsoleApplicationConan/Texture.cpp:1:
-/Volumes/JB_SANDRIVE/Yr2/Games Programming/ConsoleApplicationConan/Texture.h:3:10: fatal error: 'SDL.h' file not found
-#include "SDL.h"
-         ^
-1 error generated.
